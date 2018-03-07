@@ -14,3 +14,20 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/empresa', function (){
+    return view('empresa');
+});
+
+Route::get('/contato', function (){
+    return 'Contato';
+})->name('contato');
+
+Route::get('/index2', function(){
+    return redirect()->route('contato');
+});
+
+
+
+
+
