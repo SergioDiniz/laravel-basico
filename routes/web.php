@@ -11,9 +11,8 @@
 |
 */
 
-Route::get('/', 'SiteController@index');
-Route::get('/contato', 'SiteController@contato');
-Route::get('/categoria/{idCategoria?}', 'SiteController@categoria');
-
-
-
+Route::group(['namespace'=>'Site'], function(){
+    Route::get('/', 'SiteController@index'); // Route::get('/', 'Site\SiteController@index'); 
+    Route::get('/contato', 'SiteController@contato');
+    Route::get('/categoria/{idCategoria?}', 'SiteController@categoria');
+});
