@@ -27,7 +27,18 @@ Route::get('/index2', function(){
     return redirect()->route('contato');
 });
 
+Route::get('/categoria/{nomeCategoria}/ordem/{ordem?}', function($nomeCategoria, $ordem = ''){
+    return "Categoria: {$nomeCategoria} - {$ordem}";
+});
 
+Route::group(['prefix'=>'admin'], function(){
+    Route::get('/', function(){
+        return 'Home';
+    });
+    Route::get('/conf', function(){
+        return 'Configurações';
+    });
+});
 
 
 
