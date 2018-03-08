@@ -12,16 +12,18 @@ class SiteController extends Controller
         // $this->middleware('auth');
         // $this->middleware('auth')
         //      ->only(['contato', 'categoria']);
-        $this->middleware('auth')
-             ->except('index');
+//        $this->middleware('auth')
+//             ->except('index');
     }
     
     public function index() {
-        return 'Página Home';
+//        return 'Página Home';
+        $nome = 'Sérgio';
+        return view('site.home.bemvindo', compact('nome'));
     }
 
     public function contato() {
-        return 'Página de Contato';
+        return view('site.contato.contato', ['title'=>'Página de Contato']);
     }
     
     public function categoria($id = 1) {
