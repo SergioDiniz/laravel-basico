@@ -11,8 +11,14 @@
 |
 */
 
+Route::resource('/painel/produtos', 'Painel\ProdutoController');
+
 Route::group(['namespace'=>'Site'], function(){
     Route::get('/', 'SiteController@index'); // Route::get('/', 'Site\SiteController@index'); 
     Route::get('/contato', 'SiteController@contato');
     Route::get('/categoria/{idCategoria?}', 'SiteController@categoria');
 });
+
+Route::get('login',  [ 'as' => 'login', 'uses' => function(){
+    return 'login';
+}]);
