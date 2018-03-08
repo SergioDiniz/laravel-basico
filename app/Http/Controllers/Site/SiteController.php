@@ -19,7 +19,8 @@ class SiteController extends Controller
     public function index() {
 //        return 'Página Home';
         $nome = 'Sérgio';
-        return view('site.home.bemvindo', compact('nome'));
+        $data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        return view('site.home.bemvindo', compact('nome', 'data'));
     }
 
     public function contato() {
