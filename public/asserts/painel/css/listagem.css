@@ -1,0 +1,18 @@
+.actions{
+    padding: 6px;
+    margin: 0 2px;
+    color: #fff;
+    border-radius: 3px;
+    text-decoration: none;
+}
+.actions:hover{
+    color: #fff;
+    text-decoration: none;
+}
+.edit{
+    background-color: #44a2ff;
+}
+.delete{
+    background-color: #de5c5c;
+}
+.btn-add{margin-bottom: 10px;}

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Painel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Painel\Product;
+use App\Http\Requests\Painel\ProductFormRequest;
+
 class ProdutoController extends Controller
 {
 
@@ -21,8 +23,10 @@ class ProdutoController extends Controller
      */
     public function index(Product $product)
     {
-        $products = $this->product->all();
-        return view('painel.products.index', compact('products'));
+        $title = "Listagem dos Produtos";
+        // $products = $this->product->all();
+        $products = $this->product->paginate(1);
+        return view('painel.products.index', compact('products', 'title'));
     }
 
     /**
@@ -32,7 +36,9 @@ class ProdutoController extends Controller
      */
     public function create()
     {
-        //
+        $title = 'Cadastrar novo produto.';
+        $categories =  ['eletronicos', 'moveis', 'limpeza', 'banho'];
+        return view('painel.products.create-edit', compact('title', 'categories'));
     }
 
     /**
@@ -41,9 +47,32 @@ class ProdutoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductFormRequest $request)
     {
-        //
+        // $request->all() // $request->only(['name']) // $request->expect(['name']) // $request->input('name')
+
+        // pegando os dados
+        $dataForm = $request->all();
+        $dataForm['active'] = (!isset($dataForm['active'])) ? 0 : 1;
+
+        // validando pelo Request ProductFormRequest
+
+        // validaando
+        // $this->validate($request, $this->product->rules, $this->product->validateMessages);
+        // outra forma de fazer
+        // $validate = validator($dataForm, $this->product->rules, $this->product->validateMessages);
+        // if( $validate->fails()){
+        //     return redirect()
+        //             ->route('produtos.create-edit')
+        //             ->withErrors($validate)
+        //             ->withInput();
+        // }
+
+        // salvando
+        $created = $this->product->create($dataForm);
+
+        if($created) return redirect()->route('produtos.index');
+        else return redirect()->route('produtos.create-edit');
     }
 
     /**
@@ -65,7 +94,10 @@ class ProdutoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = $this->product->find($id);
+        $title = "Editando produto {$product->name}";
+        $categories =  ['eletronicos', 'moveis', 'limpeza', 'banho'];
+        return view('painel.products.create-edit', compact('title', 'categories', 'product'));
     }
 
     /**
@@ -75,9 +107,16 @@ class ProdutoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProductFormRequest $request, $id)
     {
-        //
+        $dataForm = $request->all();
+        $dataForm['active'] = (!isset($dataForm['active'])) ? 0 : 1;
+        $produto = $this->product->find($id); 
+        $update = $produto->update($dataForm);
+
+        if($update) return redirect()->route('produtos.index');
+        else return redirect()->route('produtos.edit', $id)->with(['errors'=>'Erro ao tentar atualizar produto']);
+
     }
 
     /**
@@ -88,7 +127,10 @@ class ProdutoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product = $this->product->find($id);
+        $delete = $product->delete();
+        if($update) return redirect()->route('produtos.index');
+        else return 'Erro ao deletar';
     }
 
     public function tests(){
@@ -110,6 +152,12 @@ class ProdutoController extends Controller
         else 
             return 'Falha ao Inserir';
         
+
+        // $this->product->find(1) // ID
+        // $this->product->where('name', 'Produto') // coluna
+        // $this->product->find(1)->update(['name'=>'nome 2']) 
+        // $this->product->find(1)->delete() 
+        // $this->product->destroy(1) // pode passar um array: [1, 2, 3]
 
     }
 }
